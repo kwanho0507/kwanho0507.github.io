@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8589878957151290"
-     crossorigin="anonymous"></script>
-
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8589878957151290" crossorigin="anonymous"></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>나의 헌팅 성공률은?</title>
@@ -118,7 +116,12 @@
     setTimeout(() => {
       document.getElementById('loading').classList.add('hidden');
       const score = Math.floor(Math.random() * 101);
-      document.getElementById('resultBox').innerText = `🎯 헌팅 성공률: ${score}%`;
+const points = Math.floor(score * 1.37); // 점수 예시 계산식
+
+let resultText = `🎯 헌팅 성공률: ${score}%`;
+resultText += `
+💪 헌팅력: ${points}`;
+document.getElementById('resultBox').innerText = resultText;
 
       let message = '';
       if (score > 90) message = '🔥 당신은 헌팅의 신!';
