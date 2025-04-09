@@ -18,6 +18,12 @@
       height: auto;
     }
   </style>
+  <meta property="og:title" content="나의 헌팅 성공률은?" />
+  <meta property="og:description" content="사진만 올리면 바로 측정! 💘 너의 헌팅력은 몇 점일까?" />
+  <meta property="og:image" content="https://kwanho0507.github.io/hunting-success/og-image.jpg" />
+  <meta property="og:url" content="https://kwanho0507.github.io/hunting-success/" />
+  <meta name="twitter:card" content="summary_large_image" />
+
 </head>
 <body>
 
@@ -44,8 +50,8 @@
       <p>분석 중입니다...</p>
     </div>
 
-    <div id="resultBox" class="hidden" style="font-size: 26px; font-weight: bold; margin-top: 20px;"></div>
-    <div id="funMessage" class="hidden" style="font-size: 22px; margin-top: 10px;"></div>
+    <div id="resultBox" class="hidden" style="font-size: 26px; font-weight: bold; margin-top: 20px; background: #fefefe; border: 2px solid #ccc; border-radius: 12px; padding: 20px; max-width: 90%; box-shadow: 0 4px 8px rgba(0,0,0,0.1); white-space: pre-line;"></div>
+    <div id="funMessage" class="hidden" style="font-size: 22px; margin-top: 10px; background: #fffaf0; padding: 15px; border: 1px dashed #f90; border-radius: 8px; white-space: pre-line;"></div>
 
     <div id="buttonGroup" class="hidden" style="margin-top: 24px; display: none; flex-direction: column; gap: 12px;">
   <button onclick="restartApp()">🔄 다시 측정하기</button>
@@ -53,8 +59,8 @@
 </div>
 
     <div id="shareArea" class="hidden" style="margin-top: 12px;">
-      <button onclick="shareResult()">📤 공유하기</button>
-    </div>
+  <button onclick="shareResult()">📤 공유하기</button>
+      </div>
   </div>
 
   <!-- 사진 선택 & 결과보기 (결과 밑에 위치) -->
@@ -124,11 +130,22 @@ resultText += `
 document.getElementById('resultBox').innerText = resultText;
 
       let message = '';
-      if (score > 90) message = '🔥 당신은 헌팅의 신!';
-      else if (score > 70) message = '😎 매력 넘치네요!';
-      else if (score > 40) message = '🙂 오늘 나쁘지 않아요!';
-      else message = '💔 음… 집에 계시는 게...';
-
+      let grade = '';
+      if (score > 90) {
+        message = '🔥 당신은 헌팅의 신!';
+        grade = '✨ SSS급';
+      } else if (score > 70) {
+        message = '😎 매력 넘치네요!';
+        grade = '💎 A급';
+      } else if (score > 40) {
+        message = '🙂 오늘 나쁘지 않아요!';
+        grade = '👍 B급';
+      } else {
+        message = '💔 음… 집에 계시는 게...';
+        grade = '😅 헌팅 보류';
+      }
+      message = `${message}
+등급: ${grade}`;
       document.getElementById('funMessage').innerText = message;
       document.getElementById('resultBox').classList.remove('hidden');
       document.getElementById('funMessage').classList.remove('hidden');
@@ -152,16 +169,45 @@ document.getElementById('buttonGroup').style.display = 'flex';
   }
 
   function shareResult() {
-    const shareText = document.getElementById('resultBox').innerText + '\n' +
-                      document.getElementById('funMessage').innerText + '\n👉 https://kwanho0507.github.io/hunting-success/';
-    if (navigator.share) {
-      navigator.share({ title: '나의 헌팅 성공률', text: shareText }).catch(console.error);
-    } else {
-      navigator.clipboard.writeText(shareText).then(() => {
-        alert("링크가 복사되었습니다! 친구에게 붙여넣기 해보세요");
-      });
-    }
-  }
+  const resultArea = document.createElement('div');
+  resultArea.style.background = 'white';
+  resultArea.style.padding = '20px';
+  resultArea.style.borderRadius = '12px';
+  resultArea.style.display = 'inline-block';
+  resultArea.style.fontFamily = 'sans-serif';
+
+  const previewImg = document.getElementById('previewImage').cloneNode(true);
+  const resultBox = document.getElementById('resultBox').cloneNode(true);
+  const funMsg = document.getElementById('funMessage').cloneNode(true);
+
+  [previewImg, resultBox, funMsg].forEach(el => {
+    el.classList.remove('hidden');
+    resultArea.appendChild(el);
+  });
+
+  document.body.appendChild(resultArea);
+
+  html2canvas(resultArea, { scale: 2 }).then(canvas => {
+    document.body.removeChild(resultArea);
+    canvas.toBlob(blob => {
+      const file = new File([blob], 'hunting_result.png', { type: 'image/png' });
+
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        navigator.share({
+          files: [file],
+          title: '나의 헌팅 성공률',
+          text: '너도 해봐! 💘 헌팅력 테스트'
+        }).catch(console.error);
+      } else {
+        const link = document.createElement('a');
+        link.download = 'hunting_result.png';
+        link.href = canvas.toDataURL();
+        link.click();
+        alert("이미지로 저장했습니다! 갤러리에서 공유해보세요 ✨");
+      }
+    });
+  });
+}
 </script>
 </body>
 </html>
