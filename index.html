@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>나의 헌팅 성공률은?</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { width: 100%; min-height: 100vh; font-family: sans-serif; text-align: center; }
+    .hidden { display: none; }
+    button:disabled { opacity: 0.6; cursor: not-allowed; }
+    #previewImage {
+      margin-top: 10px;
+      margin-bottom: 10px;
+      border-radius: 12px;
+      max-width: 70%;
+      height: auto;
+    }
+  </style>
+</head>
+<body>
+
+<!-- 1페이지 -->
+<div id="startScreen" style="display: flex; flex-direction: column; justify-content: flex-end; align-items: center; width: 100vw; height: 100vh; background: url('첫페이지.jpg') no-repeat center center; background-size: cover; position: relative; padding-bottom: 120px;">
+  <button onclick="startApp()" style="background: white; color: black; font-size: 24px; font-weight: bold; padding: 12px 30px; border-radius: 8px; border: none; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3); z-index: 2; margin-bottom: 20px;">측정하기</button>
+  <div style="width: 100%; text-align: center; background: rgba(255,255,255,0.9); padding: 10px 0; position: absolute; bottom: 0;">
+    <p style="color: gray; font-size: 14px;">🔻 여기에 광고가 표시됩니다 🔻</p>
+    <div style="width: 100%; max-width: 320px; margin: 0 auto; background: #f0f0f0; padding: 20px; border-radius: 8px;">
+      <p style="color: #999;">(광고 영역)</p>
+    </div>
+  </div>
+</div>
+
+<!-- 2페이지 -->
+<div id="mainContent" style="display: none; flex-direction: column; justify-content: flex-start; align-items: center; min-height: 100vh; padding: 30px;">
+  <h1>📸 나의 헌팅 성공률은?</h1>
+
+  <img id="previewImage" class="hidden" style="margin-top: 10px; margin-bottom: 10px; border-radius: 12px; max-width: 70%; height: auto;" />
+
+  <div style="margin-top: 10px;">
+    <div id="loading" class="hidden">
+      <img src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif" width="150" alt="분석중 애니메이션">
+      <p>분석 중입니다...</p>
+    </div>
+
+    <div id="resultBox" class="hidden" style="font-size: 26px; font-weight: bold; margin-top: 20px;"></div>
+    <div id="funMessage" class="hidden" style="font-size: 22px; margin-top: 10px;"></div>
+
+    <div id="buttonGroup" class="hidden" style="margin-top: 24px; display: none; flex-direction: column; gap: 12px;">
+  <button onclick="restartApp()">🔄 다시 측정하기</button>
+  <button onclick="saveAsImage()">💾 이미지로 저장</button>
+</div>
+
+    <div id="shareArea" class="hidden" style="margin-top: 12px;">
+      <button onclick="shareResult()">📤 공유하기</button>
+    </div>
+  </div>
+
+  <!-- 사진 선택 & 결과보기 (결과 밑에 위치) -->
+  <div id="uploadButtons" style="margin-top: 30px; margin-bottom: 20px;">
+    <input type="file" accept="image/*" id="photoInput" onchange="previewPhoto(event)" style="display:none;" />
+    <label for="photoInput" style="background: #333; color: white; padding: 10px 20px; border-radius: 8px; cursor: pointer; display: inline-block;">사진 선택하기</label>
+    <br><br>
+    <button id="resultButton" onclick="showResult()">결과 보기</button>
+  </div>
+
+  <!-- 하단 광고 -->
+  <div style="margin-top: auto;">
+    <p style="color: gray; font-size: 14px;">🔻 여기에 광고가 표시됩니다 🔻</p>
+    <div style="width: 100%; max-width: 320px; margin: 0 auto; background: #f0f0f0; padding: 20px; border-radius: 8px;">
+      <p style="color: #999;">(광고 영역)</p>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script>
+  function startApp() {
+    document.getElementById('startScreen').style.display = 'none';
+    const main = document.getElementById('mainContent');
+    main.style.display = 'flex';
+    main.style.flexDirection = 'column';
+    main.style.justifyContent = 'flex-start';
+    main.style.alignItems = 'center';
+  }
+
+  function previewPhoto(event) {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = document.getElementById('previewImage');
+        img.src = e.target.result;
+        img.classList.remove('hidden');
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  function showResult() {
+    const photoInput = document.getElementById('photoInput');
+    const resultButton = document.getElementById('resultButton');
+    if (!photoInput.files.length) {
+      alert('사진을 먼저 올려주세요!');
+      return;
+    }
+
+    resultButton.disabled = true;
+    document.getElementById('loading').classList.remove('hidden');
+    document.getElementById('resultBox').classList.add('hidden');
+    document.getElementById('funMessage').classList.add('hidden');
+    document.getElementById('buttonGroup').classList.add('hidden');
+    document.getElementById('shareArea').classList.add('hidden');
+
+    setTimeout(() => {
+      document.getElementById('loading').classList.add('hidden');
+      const score = Math.floor(Math.random() * 101);
+      document.getElementById('resultBox').innerText = `🎯 헌팅 성공률: ${score}%`;
+
+      let message = '';
+      if (score > 90) message = '🔥 당신은 헌팅의 신!';
+      else if (score > 70) message = '😎 매력 넘치네요!';
+      else if (score > 40) message = '🙂 오늘 나쁘지 않아요!';
+      else message = '💔 음… 집에 계시는 게...';
+
+      document.getElementById('funMessage').innerText = message;
+      document.getElementById('resultBox').classList.remove('hidden');
+      document.getElementById('funMessage').classList.remove('hidden');
+      document.getElementById('buttonGroup').classList.remove('hidden');
+document.getElementById('buttonGroup').style.display = 'flex';
+      document.getElementById('shareArea').classList.remove('hidden');
+    }, 3000);
+  }
+
+  function restartApp() {
+    location.reload();
+  }
+
+  function saveAsImage() {
+    html2canvas(document.querySelector("#mainContent"), { scale: 2 }).then(canvas => {
+      const link = document.createElement('a');
+      link.download = 'hunting_result.png';
+      link.href = canvas.toDataURL();
+      link.click();
+    });
+  }
+
+  function shareResult() {
+    const shareText = document.getElementById('resultBox').innerText + '\n' +
+                      document.getElementById('funMessage').innerText + '\n👉 https://kwanho0507.github.io/hunting-success/';
+    if (navigator.share) {
+      navigator.share({ title: '나의 헌팅 성공률', text: shareText }).catch(console.error);
+    } else {
+      navigator.clipboard.writeText(shareText).then(() => {
+        alert("링크가 복사되었습니다! 친구에게 붙여넣기 해보세요");
+      });
+    }
+  }
+</script>
+</body>
+</html>
