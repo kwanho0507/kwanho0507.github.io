@@ -236,16 +236,15 @@ document.getElementById('buttonGroup').style.display = 'flex';
 
       if (navigator.canShare && navigator.canShare({ files: [file] })) {
         navigator.share({
-          files: [file],
-          title: '나의 헌팅 성공률',
-          text: '너도 해봐! 💘 헌팅력 테스트'
-        }).catch(console.error);
+  files: [file],
+  title: '나의 헌팅 성공률',
+  text: '너도 해봐! 💘 헌팅력 테스트'
+}).catch(() => {
+  alert('공유가 취소되었거나 실패했습니다. 이미지를 저장하거나 스크린샷으로 공유해보세요!');
+});
       } else {
-        const link = document.createElement('a');
-        link.download = 'hunting_result.png';
-        link.href = canvas.toDataURL();
-        link.click();
-        alert("이미지로 저장했습니다! 갤러리에서 공유해보세요 ✨");
+        alert("이 기기는 공유를 지원하지 않아요 😢\n이미지를 저장하거나 스크린샷으로 친구에게 공유해보세요!");
+
       }
     });
   });
