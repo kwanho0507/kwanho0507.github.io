@@ -28,7 +28,7 @@
 <body>
 
 <!-- 1페이지 -->
-<div id="startScreen" style="display: flex; flex-direction: column; justify-content: flex-end; align-items: center; width: 100vw; height: 100vh; background: url('첫페이지.jpg') no-repeat center center; background-size: cover; position: relative; padding-bottom: 120px;">
+<div id="startScreen" style="display: flex; flex-direction: column; justify-content: flex-end; align-items: center; width: 100vw; height: 100vh; background: url('메인1.gif') no-repeat center center; background-size: cover; position: relative; padding-bottom: 120px;">
   <button onclick="startApp()" style="background: white; color: black; font-size: 24px; font-weight: bold; padding: 12px 30px; border-radius: 8px; border: none; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3); z-index: 2; margin-bottom: 20px;">측정하기</button>
   <div style="width: 100%; text-align: center; background: rgba(255,255,255,0.9); padding: 10px 0; position: absolute; bottom: 0;">
     <p style="color: gray; font-size: 14px;">🔻 여기에 광고가 표시됩니다 🔻</p>
@@ -39,31 +39,46 @@
 </div>
 
 <!-- 2페이지 -->
-<div id="mainContent" style="display: none; flex-direction: column; justify-content: flex-start; align-items: center; min-height: 100vh; padding: 30px;">
-  <h1>📸 나의 헌팅 성공률은?</h1>
-
-  <img id="previewImage" class="hidden" style="margin-top: 10px; margin-bottom: 10px; border-radius: 12px; max-width: 70%; height: auto;" />
-
-  <div style="margin-top: 10px;">
-    <div id="loading" class="hidden">
-      <img src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif" width="150" alt="분석중 애니메이션">
-      <p>분석 중입니다...</p>
-    </div>
-
-    <div id="resultBox" class="hidden" style="font-size: 26px; font-weight: bold; margin-top: 20px; background: #fefefe; border: 2px solid #ccc; border-radius: 12px; padding: 20px; max-width: 90%; box-shadow: 0 4px 8px rgba(0,0,0,0.1); white-space: pre-line;"></div>
-    <div id="funMessage" class="hidden" style="font-size: 22px; margin-top: 10px; background: #fffaf0; padding: 15px; border: 1px dashed #f90; border-radius: 8px; white-space: pre-line;"></div>
-
-    <div id="buttonGroup" class="hidden" style="margin-top: 24px; display: none; flex-direction: column; gap: 12px;">
-  <button onclick="restartApp()">🔄 다시 측정하기</button>
-  <button onclick="saveAsImage()">💾 이미지로 저장</button>
 </div>
 
-    <div id="shareArea" class="hidden" style="margin-top: 12px;">
-  <button onclick="shareResult()">📤 공유하기</button>
-      </div>
+<!-- 2페이지: 소개 스토리 페이지 -->
+<div id="introPage" style="display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 100vh; padding: 40px; text-align: center; font-size: 18px; line-height: 1.6;">
+  <h2 style="font-size: 24px; margin-bottom: 20px;">📖 헌팅 스카우터 개발 이야기</h2>
+  <p style="max-width: 600px;">
+    1993년, 암스트롱 형제는 매번 실패하는 헌팅에 지쳐 결국 좌절감을 맛보게 된다.<br>
+    "대체 뭐가 문제인 거야?" 고민 끝에 이들은 긴 연구에 돌입했고, 놀라운 사실을 밝혀냈다.<br><br>
+    외모가 전부가 아니었다!<br><br>
+    진짜 핵심은 바로 자신감!<br>
+    자신감이 높을수록 헌팅 성공률도 함께 치솟는다는 것을 발견한 것이다.<br><br>
+    그리고 마침내, 이들은 그 전설의 장비…<br>
+    <strong>‘헌팅 스카우터’</strong> 개발에 성공한다!<br><br>
+    이제 <strong>당신의 헌팅력을 측정할 시간</strong>이다.
+  </p>
+  <button onclick="goToMainContent()" style="margin-top: 30px; background: #111; color: white; font-size: 20px; padding: 12px 24px; border-radius: 8px; border: none; cursor: pointer;">📡 지금 측정하기</button>
+  <div style="width: 100%; text-align: center; margin-top: 30px;">
+    <p style="color: gray; font-size: 14px;">🔻 여기에 광고가 표시됩니다 🔻</p>
+    <div style="width: 100%; max-width: 320px; margin: 0 auto; background: #f0f0f0; padding: 20px; border-radius: 8px;">
+      <p style="color: #999;">(광고 영역)</p>
+    </div>
   </div>
+</div>
 
-  <!-- 사진 선택 & 결과보기 (결과 밑에 위치) -->
+<!-- 3페이지 -->
+<div id="mainContent" style="display: none; flex-direction: column; justify-content: flex-start; align-items: center; min-height: 100vh; padding: 30px;">
+  <div id="loading" class="hidden" style="margin-top: 20px;">
+    <img src="스카우터-로딩.gif" width="150" alt="분석중 애니메이션">
+    <p style="margin-top: 10px; font-size: 18px; color: #666;">분석 중입니다...</p>
+  </div>
+  <img id="previewImage" class="hidden" style="margin-top: 10px; margin-bottom: 10px; border-radius: 12px; max-width: 70%; height: auto;" />
+  <div id="resultBox" class="hidden" style="font-size: 26px; font-weight: bold; margin-top: 20px; background: #fefefe; border: 2px solid #ccc; border-radius: 12px; padding: 20px; max-width: 90%; box-shadow: 0 4px 8px rgba(0,0,0,0.1); white-space: pre-line;"></div>
+  <div id="funMessage" class="hidden" style="font-size: 22px; margin-top: 10px; background: #fffaf0; padding: 15px; border: 1px dashed #f90; border-radius: 8px; white-space: pre-line;"></div>
+  <div id="buttonGroup" class="hidden" style="margin-top: 24px; display: none; flex-direction: column; gap: 12px;">
+    <button onclick="restartApp()">🔄 다시 측정하기</button>
+    <button onclick="saveAsImage()">💾 이미지로 저장</button>
+  </div>
+  <div id="shareArea" class="hidden" style="margin-top: 12px;">
+    <button onclick="shareResult()">📤 공유하기</button>
+  </div>
   <div id="uploadButtons" style="margin-top: 30px; margin-bottom: 20px;">
     <input type="file" accept="image/*" id="photoInput" onchange="previewPhoto(event)" style="display:none;" />
     <label for="photoInput" style="background: #333; color: white; padding: 10px 20px; border-radius: 8px; cursor: pointer; display: inline-block;">사진 선택하기</label>
@@ -82,14 +97,18 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script>
+function goToMainContent() {
+  document.getElementById('introPage').style.display = 'none';
+  const main = document.getElementById('mainContent');
+  main.style.display = 'flex';
+  main.style.flexDirection = 'column';
+  main.style.justifyContent = 'flex-start';
+  main.style.alignItems = 'center';
+}
   function startApp() {
-    document.getElementById('startScreen').style.display = 'none';
-    const main = document.getElementById('mainContent');
-    main.style.display = 'flex';
-    main.style.flexDirection = 'column';
-    main.style.justifyContent = 'flex-start';
-    main.style.alignItems = 'center';
-  }
+  document.getElementById('startScreen').style.display = 'none';
+  document.getElementById('introPage').style.display = 'flex';
+}
 
   function previewPhoto(event) {
     const file = event.target.files[0];
@@ -113,14 +132,15 @@
     }
 
     resultButton.disabled = true;
-    document.getElementById('loading').classList.remove('hidden');
+    const loading = document.getElementById('loading');
+    if (loading) loading.classList.remove('hidden');
     document.getElementById('resultBox').classList.add('hidden');
     document.getElementById('funMessage').classList.add('hidden');
     document.getElementById('buttonGroup').classList.add('hidden');
     document.getElementById('shareArea').classList.add('hidden');
 
     setTimeout(() => {
-      document.getElementById('loading').classList.add('hidden');
+      if (loading) loading.classList.add('hidden');
       const score = Math.floor(Math.random() * 101);
 const points = Math.floor(score * 1.37); // 점수 예시 계산식
 
