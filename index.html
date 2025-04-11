@@ -7,7 +7,16 @@
   <title>나의 헌팅 성공률은?</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body { width: 100%; min-height: 100vh; font-family: sans-serif; text-align: center; }
+    html, body {
+  width: 100%;
+  min-height: 100vh;
+  font-family: sans-serif;
+  text-align: center;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
     .hidden { display: none; }
     button:disabled { opacity: 0.6; cursor: not-allowed; }
     #previewImage {
