@@ -41,19 +41,22 @@
 <!-- 1페이지 -->
 <div id="startScreen" style="display: flex; flex-direction: column; justify-content: flex-end; align-items: center; width: 100vw; height: 100vh; background: url('메인1.gif') no-repeat center center; background-size: cover; position: relative; padding-bottom: 120px;">
   <button onclick="startApp()" style="background: white; color: black; font-size: 24px; font-weight: bold; padding: 12px 30px; border-radius: 8px; border: none; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3); z-index: 2; margin-bottom: 20px;">측정하기</button>
-  <div style="width: 100%; text-align: center; background: rgba(255,255,255,0.9); padding: 10px 0; position: absolute; bottom: 0;">
+  <div style="width: 100%; text-align: center; background: rgba(255,255,255,0.9); padding: 10px 0; position: absolute; bottom: 70px;">
     <p style="color: gray; font-size: 14px;">🔻 여기에 광고가 표시됩니다 🔻</p>
     <div style="width: 100%; max-width: 320px; margin: 0 auto; background: #f0f0f0; padding: 20px; border-radius: 8px;">
       <p style="color: #999;">(광고 영역)</p>
     </div>
   </div>
+  <footer style="font-size: 13px; color: #888; text-align: center; width: 100%; background: white; padding: 10px 0; position: absolute; bottom: 0;">
+    <p>© 2025 헌팅력 측정기. All rights reserved.</p>
+    <p>이 사이트는 재미용으로 제작되었습니다. 문의: kwanho0507@gmail.com</p>
+  </footer>
 </div>
 
-<!-- 2페이지 -->
-</div>
+
 
 <!-- 2페이지: 소개 스토리 페이지 -->
-<div id="introPage" style="display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 100vh; padding: 40px; text-align: center; font-size: 18px; line-height: 1.6;">
+<div id="introPage" style="display: none; visibility: hidden; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 10;">
   <div style="margin-bottom: 30px; max-width: 600px; font-size: 13px; color: #444; line-height: 1.6;">
     <h3 style="font-size: 18px; margin-bottom: 10px;">📌 이 사이트는 무엇인가요?</h3>
     <p>
@@ -125,7 +128,8 @@ function goToMainContent() {
 }
   function startApp() {
   document.getElementById('startScreen').style.display = 'none';
-  document.getElementById('introPage').style.display = 'flex';
+  document.getElementById('introPage').style.display = 'block';
+  document.getElementById('introPage').style.visibility = 'visible';
 }
 
   function previewPhoto(event) {
@@ -247,9 +251,6 @@ document.getElementById('buttonGroup').style.display = 'flex';
   });
 }
 </script>
-<footer style="margin-top: 60px; font-size: 13px; color: #888; text-align: center;">
-  <p>© 2025 헌팅력 측정기. All rights reserved.</p>
-  <p>이 사이트는 재미용으로 제작되었습니다. 문의: kwanho0507@gmail.com</p>
-</footer>
+
 </body>
 </html>
